@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "comfy-preset-workbench": {
+      "command": "node",
+      "args": [
+        "/opt/comfy-preset-workflow-ui/mcp/comfy-preset-mcp.mjs"
+      ],
+      "env": {
+        "COMFY_PRESET_WORKBENCH_URL": "http://WINDOWS_LAN_IP:5173",
+        "COMFY_PRESET_ACCESS_KEY": "cwui_REPLACE_WITH_MEMBER_KEY"
+      }
+    }
+  }
+}
