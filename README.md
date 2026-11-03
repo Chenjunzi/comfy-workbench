@@ -61,6 +61,22 @@ $env:COMFY_ROOT = 'D:\Apps\ComfyUI'
 
 MCP 为 **stdio**：在客户端注册 `node workbench/mcp/comfy-preset-mcp.mjs`（使用绝对路径），配置 `COMFY_PRESET_WORKBENCH_URL` 和 `COMFY_PRESET_ACCESS_KEY`。客户端另机部署时需同时复制 `workbench/shared/`，使用已授权工作台地址和专用 member 密匙；无需开放网关端口。示例见 [AstrBot 配置](workbench/docs/examples/astrbot-linux-mcp_server.json)。
 
+## IPv6 远程访问
+
+要让朋友用浏览器访问同一台工作台，在运行工作台的 PowerShell 窗口中，从仓库根目录启动。若已有本地实例占用 5173，等生成队列空闲后先停止该实例。
+
+```powershell
+$env:COMFY_ROOT = 'D:\Apps\ComfyUI'
+$env:COMFY_PRESET_SHARE_HOST = '::'
+.\scripts\start-workbench.cmd
+```
+
+`::` 是监听地址，不是发给朋友的地址。浏览器访问格式为 `http://[主机的IPv6地址]:5173/`，方括号不能省略。例如 `http://[2001:db8::1234]:5173/` 仅为格式示例，要换成主机实际可达的地址。朋友应使用单独分配的 member 密匙。
+
+跨公网直连需要双方有 IPv6 连通性，且主机和路由器防火墙允许来自朋友地址的 TCP 5173 入站。直接 HTTP 不加密密匙和会话；公网使用推荐通过 HTTPS 反向代理或可信 VPN 访问。使用反向代理时，工作台可以保持回环监听，仅由代理对外提供 HTTPS；若转发原始域名作为 Host，在启动前把该域名加入 `COMFY_PRESET_ALLOWED_HOSTS`。
+
+只共享工作台。网关 8765 保持回环监听，ComfyUI 8188 也无需对外开放。要恢复仅本机访问，停止共享实例，执行 `Remove-Item Env:COMFY_PRESET_SHARE_HOST` 后重新启动即可。
+
 ## 验证
 
 维护仓库的 Agent 请读 [AGENTS.md](AGENTS.md)。已部署工作台的 Agent 可将 [comfy-workbench Skill](skills/comfy-workbench/SKILL.md) 所在目录安装到宿主的 skills 目录；仍需按上面的说明单独注册 MCP。
