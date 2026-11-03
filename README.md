@@ -57,6 +57,8 @@ MCP 为 **stdio**：在客户端注册 `node workbench/mcp/comfy-preset-mcp.mjs`
 
 ## 验证
 
+维护仓库的 Agent 请读 [AGENTS.md](AGENTS.md)。已部署工作台的 Agent 可将 [comfy-workbench Skill](skills/comfy-workbench/SKILL.md) 所在目录安装到宿主的 skills 目录；仍需按上面的说明单独注册 MCP。
+
 ```powershell
 python -m unittest discover -s agent_comfy_gateway/tests
 npm.cmd run build --prefix workbench
